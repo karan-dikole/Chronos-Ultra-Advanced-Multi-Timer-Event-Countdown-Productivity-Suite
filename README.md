@@ -8,8 +8,8 @@
 ---
 
 ## 🔗 Project Links
-- **GitHub Repository:** [https://github.com/karandikole2005/AWT-FA2-Countdown-Timer](https://github.com/karandikole2005/AWT-FA2-Countdown-Timer)
-- **Live Application:** [https://karandikole2005.github.io/AWT-FA2-Countdown-Timer/](https://karandikole2005.github.io/AWT-FA2-Countdown-Timer/)
+- **GitHub Repository:** [https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite](https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite)
+- **Live Application:** [https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/](https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/)
 - **PowerPoint Presentation File:** `Chronos_Ultra_Presentation.pptx` (Generated in root directory)
 - **Comprehensive Project Report:** `PROJECT_REPORT.md` (8–10 pages formatted for PCCOE MCA evaluation)
 

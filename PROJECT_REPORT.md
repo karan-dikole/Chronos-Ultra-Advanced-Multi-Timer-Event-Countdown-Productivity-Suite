@@ -19,9 +19,8 @@
 
 ## PROJECT LINKS & REPOSITORY DETAILS
 
-- **GitHub Repository Link:** [https://github.com/karandikole2005/AWT-FA2-Countdown-Timer](https://github.com/karandikole2005/AWT-FA2-Countdown-Timer)
-- **Live Deployment Link:** [https://karandikole2005.github.io/AWT-FA2-Countdown-Timer/](https://karandikole2005.github.io/AWT-FA2-Countdown-Timer/)
-- **Alternative Live Mirror (Vercel):** [https://chronos-ultra-timer.vercel.app](https://chronos-ultra-timer.vercel.app)
+- **GitHub Repository Link:** [https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite](https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite)
+- **Live Deployment Link:** [https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/](https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/)
 - **PowerPoint Presentation Deck:** `Chronos_Ultra_Presentation.pptx` (Located in root directory)
 
 ---

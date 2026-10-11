@@ -2,8 +2,8 @@
 ### Course: Advanced Web Technologies (AWT) | Department of MCA, PCCOE
 **Student Name:** Karan Ravindra Dikole | **PRN:** `125M1H058` | **Roll No:** 58  
 **Topic:** Countdown Timer (Phase-II: Advanced Multi-Timer & Event Suite)
-**Live Link:** [https://karandikole2005.github.io/AWT-FA2-Countdown-Timer/](https://karandikole2005.github.io/AWT-FA2-Countdown-Timer/)
-**GitHub:** [https://github.com/karandikole2005/AWT-FA2-Countdown-Timer](https://github.com/karandikole2005/AWT-FA2-Countdown-Timer)
+**Live Link:** [https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/](https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/)
+**GitHub:** [https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite](https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite)
 **PowerPoint File:** `Chronos_Ultra_Presentation.pptx`
 
 ---
