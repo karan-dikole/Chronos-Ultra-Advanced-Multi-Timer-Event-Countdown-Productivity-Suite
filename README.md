@@ -10,8 +10,8 @@
 ## 🔗 Project Links
 - **GitHub Repository:** [https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite](https://github.com/karan-dikole/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite)
 - **Live Application:** [https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/](https://karan-dikole.github.io/Chronos-Ultra-Advanced-Multi-Timer-Event-Countdown-Productivity-Suite/)
-- **PowerPoint Presentation File:** `Chronos_Ultra_Presentation.pptx` (Generated in root directory)
-- **Comprehensive Project Report:** `PROJECT_REPORT.md` (8–10 pages formatted for PCCOE MCA evaluation)
+- **PowerPoint Presentation Deck:** `Chronos_Ultra_Presentation.pptx` (Located in root directory)
+- **Comprehensive Project Report (Word Document):** `Chronos_Ultra_Project_Report.docx` (PCCOE MCA format)
 
 ---
 
@@ -83,8 +83,7 @@ d:/AWT FA2/
 │   ├── index.css         # Radiant Bright & Dark theme CSS design system
 │   └── main.jsx          # React DOM entry point
 ├── Chronos_Ultra_Presentation.pptx # 10-Slide Professional PowerPoint Presentation
-├── PROJECT_REPORT.md     # 8-10 Page Academic Submission Report
-├── PRESENTATION.md       # Slide Deck in Markdown format
-├── VIVA_QUESTIONS_AND_ANSWERS.md # Technical Viva Preparation Guide
+├── Chronos_Ultra_Project_Report.docx # Academic Submission Report in Word Document format
+├── README.md             # Project documentation & instructions
 └── package.json
 ```
