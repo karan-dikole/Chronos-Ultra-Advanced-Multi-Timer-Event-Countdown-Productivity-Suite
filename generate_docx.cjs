@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const {
   Document,
   Packer,
@@ -13,8 +14,82 @@ const {
   BorderStyle,
   Header,
   Footer,
-  PageNumber
+  PageNumber,
+  ImageRun
 } = require('docx');
+
+// Image file paths
+const pccoeLogoPath = path.join(__dirname, 'assets', 'pccoe_logo.png');
+const archDiagramPath = path.join(__dirname, 'assets', 'architecture_diagram.png');
+const screenshotsDir = path.join(__dirname, 'assets', 'screenshots');
+
+const dashboardImg = path.join(screenshotsDir, 'dashboard.png');
+const eventsImg = path.join(screenshotsDir, 'events.png');
+const pomodoroImg = path.join(screenshotsDir, 'pomodoro.png');
+const worldClockImg = path.join(screenshotsDir, 'world_clock.png');
+const analyticsImg = path.join(screenshotsDir, 'analytics.png');
+const projectInfoImg = path.join(screenshotsDir, 'project_info.png');
+
+// Helper to safely load image with type: 'png'
+function getImageRun(imgPath, width, height) {
+  if (fs.existsSync(imgPath)) {
+    return new ImageRun({
+      data: fs.readFileSync(imgPath),
+      transformation: { width, height },
+      type: 'png'
+    });
+  }
+  return new TextRun({ text: `[Image placeholder: ${path.basename(imgPath)}]`, italics: true });
+}
+
+// Section Header Helper
+function createSectionHeader(title) {
+  return new Paragraph({
+    heading: HeadingLevel.HEADING_1,
+    spacing: { before: 240, after: 100 },
+    children: [
+      new TextRun({
+        text: title,
+        bold: true,
+        size: 24,
+        color: '1E3A8A'
+      })
+    ]
+  });
+}
+
+// Subheader Helper
+function createSubHeader(title) {
+  return new Paragraph({
+    heading: HeadingLevel.HEADING_2,
+    spacing: { before: 160, after: 80 },
+    children: [
+      new TextRun({
+        text: title,
+        bold: true,
+        size: 21,
+        color: '2563EB'
+      })
+    ]
+  });
+}
+
+// Caption Helper
+function createImageCaption(captionText) {
+  return new Paragraph({
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 60, after: 160 },
+    children: [
+      new TextRun({
+        text: captionText,
+        size: 19,
+        bold: true,
+        color: '475569',
+        italics: true
+      })
+    ]
+  });
+}
 
 const doc = new Document({
   styles: {
@@ -26,7 +101,7 @@ const doc = new Document({
           color: '1E293B'
         },
         paragraph: {
-          spacing: { line: 276, before: 100, after: 100 } // 1.15 line spacing
+          spacing: { line: 276, before: 80, after: 80 } // 1.15 line spacing
         }
       }
     }
@@ -71,33 +146,24 @@ const doc = new Document({
         })
       },
       children: [
-        // COVER / HEADER
+        // ================= PAGE 1: TITLE & COVER PAGE =================
         new Paragraph({
           alignment: AlignmentType.CENTER,
+          spacing: { before: 120, after: 100 },
           children: [
-            new TextRun({ text: "PIMPRI CHINCHWAD EDUCATION TRUST'S\n", bold: true, size: 24, color: '1E3A8A' }),
-            new TextRun({ text: 'PIMPRI CHINCHWAD COLLEGE OF ENGINEERING (PCCOE)\n', bold: true, size: 28, color: '1E3A8A' }),
-            new TextRun({ text: 'Department of Master of Computer Applications (MCA)\n', bold: true, size: 24, color: '2563EB' }),
-            new TextRun({ text: 'Academic Year: 2026 – 2027  |  Semester: III  |  Class: SYMCA\n', size: 20, color: '475569' }),
-            new TextRun({ text: 'Course: Advanced Web Technologies (AWT) — Course Code: MCA301\n', size: 20, color: '475569' })
+            new TextRun({ text: 'FORMATIVE ASSESSMENT – 2\n', bold: true, size: 28, color: '1E3A8A' }),
+            new TextRun({ text: 'Mini Project – Phase II: Advanced Features, Testing and Deployment', bold: true, size: 20, color: '475569' })
           ]
         }),
 
-        new Paragraph({ spacing: { before: 200, after: 200 } }),
+        new Paragraph({ spacing: { before: 140, after: 140 } }),
 
         new Paragraph({
           alignment: AlignmentType.CENTER,
           children: [
-            new TextRun({ text: 'FORMATIVE ASSESSMENT – 2 (FA-2) PROJECT REPORT\n', bold: true, size: 26, color: 'D97706' }),
-            new TextRun({ text: 'Mini Project – Phase II: Advanced Features, Testing and Deployment\n', bold: true, size: 22, color: '475569' })
-          ]
-        }),
-
-        new Paragraph({
-          alignment: AlignmentType.CENTER,
-          children: [
+            new TextRun({ text: 'Project Title: ', bold: true, size: 26, color: '334155' }),
             new TextRun({
-              text: 'Project Title: Chronos Ultra — Advanced Multi-Timer & Event Productivity Suite',
+              text: 'Chronos Ultra — Advanced Multi-Timer &\nEvent Productivity Suite',
               bold: true,
               size: 28,
               color: '1E3A8A'
@@ -105,9 +171,59 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({ spacing: { before: 200, after: 200 } }),
+        new Paragraph({ spacing: { before: 160, after: 160 } }),
 
-        // STUDENT CREDENTIALS TABLE
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({ text: 'Submitted By\n', bold: true, size: 22, color: '64748B' }),
+            new TextRun({ text: 'Mr. Karan Dikole\n', bold: true, size: 26, color: '0F172A' }),
+            new TextRun({ text: 'Post Graduate Student with PRN No. 125M1H058', bold: true, size: 22, color: '2563EB' })
+          ]
+        }),
+
+        new Paragraph({ spacing: { before: 140, after: 140 } }),
+
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({ text: 'Under the Guidance of\n', bold: true, size: 22, color: '64748B' }),
+            new TextRun({ text: 'Dr. Avinash Chormale', bold: true, size: 24, color: '0F172A' })
+          ]
+        }),
+
+        new Paragraph({ spacing: { before: 160, after: 160 } }),
+
+        // PCCOE OFFICIAL EMBEDDED LOGO
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [getImageRun(pccoeLogoPath, 130, 130)]
+        }),
+
+        new Paragraph({ spacing: { before: 160, after: 160 } }),
+
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({ text: 'Department of Master of Computer Application\n', bold: true, size: 24, color: '1E3A8A' }),
+            new TextRun({ text: "Pimpri Chinchwad Education Trust's\n", bold: true, size: 22, color: '475569' }),
+            new TextRun({ text: 'Pimpri Chinchwad College of Engineering\n', bold: true, size: 26, color: '1E3A8A' }),
+            new TextRun({ text: 'Academic Year: 2026 – 2027\n', size: 20, color: '475569' }),
+            new TextRun({ text: 'Semester: III\n', size: 20, color: '475569' }),
+            new TextRun({ text: 'Class: SYMCA Course: Advanced Web Technologies (AWT)', bold: true, size: 20, color: '2563EB' })
+          ]
+        }),
+
+        // PAGE BREAK
+        new Paragraph({ pageBreakBefore: true }),
+
+        // ================= PAGE 2: STUDENT DETAILS & ABSTRACT =================
+        new Paragraph({
+          heading: HeadingLevel.HEADING_2,
+          spacing: { before: 80, after: 120 },
+          children: [new TextRun({ text: 'Student & Project Identification', bold: true, size: 22, color: '1E3A8A' })]
+        }),
+
         new Table({
           width: { size: 100, type: WidthType.PERCENTAGE },
           rows: [
@@ -125,49 +241,31 @@ const doc = new Document({
             }),
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'PRN', bold: true, color: '1E3A8A' })] })]
-                }),
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: '125M1H058', bold: true, color: '2563EB' })] })]
-                })
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'PRN', bold: true, color: '1E3A8A' })] })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '125M1H058', bold: true, color: '2563EB' })] })] })
               ]
             }),
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'Roll No / Class', bold: true, color: '1E3A8A' })] })]
-                }),
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: '58  |  SYMCA (Division A)' })] })]
-                })
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Roll No / Class', bold: true, color: '1E3A8A' })] })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '58  |  SYMCA (Division A)' })] })] })
               ]
             }),
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'Course Owner', bold: true, color: '1E3A8A' })] })]
-                }),
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'Dr. Avinash Chormale' })] })]
-                })
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Course Owner', bold: true, color: '1E3A8A' })] })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Dr. Avinash Chormale' })] })] })
               ]
             }),
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'Module Coordinator', bold: true, color: '1E3A8A' })] })]
-                }),
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'Dr. Rajkamal Sangole' })] })]
-                })
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Module Coordinator', bold: true, color: '1E3A8A' })] })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Dr. Rajkamal Sangole' })] })] })
               ]
             }),
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'GitHub Repository', bold: true, color: '1E3A8A' })] })]
-                }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'GitHub Repository', bold: true, color: '1E3A8A' })] })] }),
                 new TableCell({
                   children: [
                     new Paragraph({
@@ -185,9 +283,7 @@ const doc = new Document({
             }),
             new TableRow({
               children: [
-                new TableCell({
-                  children: [new Paragraph({ children: [new TextRun({ text: 'Live Working URL', bold: true, color: '1E3A8A' })] })]
-                }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Live Working URL', bold: true, color: '1E3A8A' })] })] }),
                 new TableCell({
                   children: [
                     new Paragraph({
@@ -207,13 +303,10 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({ spacing: { before: 300, after: 150 } }),
+        new Paragraph({ spacing: { before: 180, after: 100 } }),
 
-        // SECTION 1: EXECUTIVE SUMMARY
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '1. Executive Summary & Abstract', bold: true, size: 24, color: '1E3A8A' })]
-        }),
+        // SECTION 1
+        createSectionHeader('1. Executive Summary & Abstract'),
         new Paragraph({
           children: [
             new TextRun({
@@ -229,15 +322,9 @@ const doc = new Document({
           ]
         }),
 
-        // SECTION 2: PROBLEM IDENTIFICATION & OBJECTIVES
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '2. Problem Identification & Objectives', bold: true, size: 24, color: '1E3A8A' })]
-        }),
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [new TextRun({ text: '2.1 Problem Identification', bold: true, size: 22, color: '2563EB' })]
-        }),
+        // SECTION 2
+        createSectionHeader('2. Problem Identification & Objectives'),
+        createSubHeader('2.1 Problem Identification'),
         new Paragraph({
           children: [
             new TextRun({ text: '1. Single-Timer Constraint: ', bold: true }),
@@ -263,10 +350,7 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [new TextRun({ text: '2.2 Objectives of Phase-II', bold: true, size: 22, color: '2563EB' })]
-        }),
+        createSubHeader('2.2 Objectives of Phase-II'),
         new Paragraph({
           children: [
             new TextRun({ text: '• Modular Functional Architecture: ', bold: true }),
@@ -298,11 +382,8 @@ const doc = new Document({
           ]
         }),
 
-        // SECTION 3: SYSTEM ARCHITECTURE
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '3. System Architecture & Component Hierarchy', bold: true, size: 24, color: '1E3A8A' })]
-        }),
+        // SECTION 3: SYSTEM ARCHITECTURE (WITH DIAGRAM IMAGE)
+        createSectionHeader('3. System Architecture & Component Hierarchy'),
         new Paragraph({
           children: [
             new TextRun({
@@ -310,6 +391,15 @@ const doc = new Document({
             })
           ]
         }),
+
+        // EMBED ARCHITECTURE DIAGRAM IMAGE
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 120, after: 60 },
+          children: [getImageRun(archDiagramPath, 460, 260)]
+        }),
+        createImageCaption('Figure 1: Chronos Ultra Component Architecture & Unidirectional Data Flow'),
+
         new Paragraph({
           children: [
             new TextRun({ text: '• Core Container: ', bold: true }),
@@ -325,19 +415,13 @@ const doc = new Document({
         new Paragraph({
           children: [
             new TextRun({ text: '• Reusable UI Layer: ', bold: true }),
-            new TextRun({ text: 'TimerCard (with SVG circular progress), EventCountdownCard, TimerModal (dual mode creator), SoundPicker, Toast notifications.' })
+            new TextRun({ text: 'TimerCard (hardware-accelerated SVG circular progress), EventCountdownCard (digital units), TimerModal (dual mode creator), SoundPicker, Toast notifications.' })
           ]
         }),
 
-        // SECTION 4: ADVANCED FEATURES IMPLEMENTATION
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '4. Advanced Features Implementation (Phase-II Scope)', bold: true, size: 24, color: '1E3A8A' })]
-        }),
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [new TextRun({ text: '4.1 React Hooks Implementation', bold: true, size: 22, color: '2563EB' })]
-        }),
+        // SECTION 4: ADVANCED FEATURES
+        createSectionHeader('4. Advanced Features Implementation (Phase-II Scope)'),
+        createSubHeader('4.1 React Hooks Implementation'),
         new Paragraph({
           children: [
             new TextRun({
@@ -394,10 +478,7 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [new TextRun({ text: '4.2 Web Audio API Sound Synthesizer', bold: true, size: 22, color: '2563EB' })]
-        }),
+        createSubHeader('4.2 Web Audio API Sound Synthesizer'),
         new Paragraph({
           children: [
             new TextRun({
@@ -414,10 +495,7 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          children: [new TextRun({ text: '4.3 Form Validation, CRUD & Dual Themes', bold: true, size: 22, color: '2563EB' })]
-        }),
+        createSubHeader('4.3 Form Validation, CRUD & Dual Themes'),
         new Paragraph({
           children: [
             new TextRun({
@@ -426,11 +504,116 @@ const doc = new Document({
           ]
         }),
 
-        // SECTION 5: TESTING & PERFORMANCE
+        // ================= SECTION 5: OUTPUT SCREENSHOTS & DEMONSTRATION =================
+        new Paragraph({ pageBreakBefore: true }),
+        createSectionHeader('5. Application Output Screenshots & Visual Demonstration'),
         new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '5. Automated Testing & Verification Results', bold: true, size: 24, color: '1E3A8A' })]
+          children: [
+            new TextRun({
+              text: 'The following high-resolution output screenshots illustrate the fully functioning user interfaces, reactive workflows, and features implemented across Chronos Ultra:'
+            })
+          ]
         }),
+
+        // 1. DASHBOARD SCREENSHOT
+        createSubHeader('5.1 Multi-Timer Dashboard View'),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'The central dashboard displays active countdown timers with live circular SVG progress indicators, remaining time digital readouts, tag categorization badges, instant preset launchers, and search filters.'
+            })
+          ]
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 40 },
+          children: [getImageRun(dashboardImg, 460, 260)]
+        }),
+        createImageCaption('Figure 2: Precision Multi-Timer Dashboard with Animated SVG Progress Rings & Presets'),
+
+        // 2. EVENTS COUNTDOWN SCREENSHOT
+        createSubHeader('5.2 Target Date Event Countdowns View'),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Enables scheduling long-term milestones (such as PCCOE FA-2 submission deadlines, University Exams, and Project Milestones) with real-time Day/Hour/Minute/Second countdown digit cards.'
+            })
+          ]
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 40 },
+          children: [getImageRun(eventsImg, 460, 260)]
+        }),
+        createImageCaption('Figure 3: Long-Term Milestone Tracker with Split Digital Time Units'),
+
+        // 3. POMODORO FOCUS SUITE SCREENSHOT
+        createSubHeader('5.3 Pomodoro Focus & Interval Productivity Suite'),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Features dedicated focus intervals (25-minute Focus Sprint, 5-minute Short Break, 15-minute Long Break) complete with automatic round progression, celebration confetti, and focus streak tallying.'
+            })
+          ]
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 40 },
+          children: [getImageRun(pomodoroImg, 460, 260)]
+        }),
+        createImageCaption('Figure 4: Pomodoro Technique Workspace with Focus Streak Tracker & Dual Themes'),
+
+        // 4. WORLD CLOCK SCREENSHOT
+        createSubHeader('5.4 Global World Clock & REST API Timezone Synchronization'),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Synchronizes local clocks with international timezones via REST API (WorldTimeAPI) with automatic fallback to native Intl.DateTimeFormat, complete with city search and live UTC offsets.'
+            })
+          ]
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 40 },
+          children: [getImageRun(worldClockImg, 460, 260)]
+        }),
+        createImageCaption('Figure 5: Live World Clock Grid with Network Time Synchronization & City Filters'),
+
+        // 5. ANALYTICS & EXPORT SCREENSHOT
+        createSubHeader('5.5 Productivity Analytics & Data Export View'),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Provides historical metrics on total focus duration, completed session counts, category breakdown, and one-click data export in both CSV and JSON formats for academic study logs.'
+            })
+          ]
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 40 },
+          children: [getImageRun(analyticsImg, 460, 260)]
+        }),
+        createImageCaption('Figure 6: Session History Log with Instant CSV and JSON Data Export'),
+
+        // 6. PROJECT INFO & COMPLIANCE SCREENSHOT
+        createSubHeader('5.6 Project Information & Academic Compliance Matrix'),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Presents verified student credentials (Karan Ravindra Dikole, PRN: 125M1H058), PCCOE MCA course details, and the Formative Assessment 2 (FA-2) syllabus implementation matrix.'
+            })
+          ]
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 40 },
+          children: [getImageRun(projectInfoImg, 460, 260)]
+        }),
+        createImageCaption('Figure 7: Academic Verification & Syllabus Compliance Matrix in Chronos Ultra'),
+
+        // ================= SECTION 6: AUTOMATED TESTING =================
+        new Paragraph({ pageBreakBefore: true }),
+        createSectionHeader('6. Automated Testing & Verification Results'),
         new Paragraph({
           children: [
             new TextRun({
@@ -494,13 +677,10 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({ spacing: { before: 200, after: 150 } }),
+        new Paragraph({ spacing: { before: 180, after: 120 } }),
 
-        // SECTION 6: CO MAPPING
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: "6. Course Outcome (CO) & Bloom's Taxonomy Mapping", bold: true, size: 24, color: '1E3A8A' })]
-        }),
+        // SECTION 7: CO MAPPING
+        createSectionHeader("7. Course Outcome (CO) & Bloom's Taxonomy Mapping"),
         new Table({
           width: { size: 100, type: WidthType.PERCENTAGE },
           rows: [
@@ -570,13 +750,10 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({ spacing: { before: 200, after: 150 } }),
+        new Paragraph({ spacing: { before: 180, after: 120 } }),
 
-        // SECTION 7: CONCLUSION
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '7. Conclusion & Future Enhancements', bold: true, size: 24, color: '1E3A8A' })]
-        }),
+        // SECTION 8: CONCLUSION
+        createSectionHeader('8. Conclusion & Future Enhancements'),
         new Paragraph({
           children: [
             new TextRun({
@@ -592,13 +769,10 @@ const doc = new Document({
           ]
         }),
 
-        new Paragraph({ spacing: { before: 200, after: 100 } }),
+        new Paragraph({ spacing: { before: 180, after: 80 } }),
 
-        // SECTION 8: REFERENCES
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          children: [new TextRun({ text: '8. References', bold: true, size: 24, color: '1E3A8A' })]
-        }),
+        // SECTION 9: REFERENCES
+        createSectionHeader('9. References'),
         new Paragraph({ children: [new TextRun({ text: '1. React Documentation: https://react.dev/' })] }),
         new Paragraph({ children: [new TextRun({ text: '2. React Router Documentation: https://reactrouter.com/' })] }),
         new Paragraph({ children: [new TextRun({ text: '3. MDN Web Audio API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API' })] }),
@@ -612,7 +786,7 @@ const doc = new Document({
 Packer.toBuffer(doc)
   .then((buffer) => {
     fs.writeFileSync('Chronos_Ultra_Project_Report.docx', buffer);
-    console.log('Successfully generated Word Document: Chronos_Ultra_Project_Report.docx');
+    console.log('Successfully generated Word Document with screenshots: Chronos_Ultra_Project_Report.docx');
   })
   .catch((err) => {
     console.error('Error generating document:', err);
